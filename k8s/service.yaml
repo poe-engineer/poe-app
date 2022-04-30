@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: poe-service
+spec:
+  type: ClusterIP
+  selector:
+    app: poe
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

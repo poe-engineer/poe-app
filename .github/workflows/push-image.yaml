@@ -1,0 +1,40 @@
+name: Build, Publish and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-publish-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: azure/setup-kubectl@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 17
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@poe-engineer"
+
+      - name: Build Container
+        run: |
+          docker build . -t ghcr.io/poe-engineer/poe-github-app:latest
+
+      - name: Publish Container
+        run: |
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+          docker push ghcr.io/poe-engineer/poe-github-app:latest
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_ACCESS_TOKEN }} 
+
+      - run: doctl kubernetes cluster kubeconfig save poe
+
+      - name: Deploy K8s
+        run: |
+          kubectl apply -k ./k8s 
+      
+      - run: kubectl rollout restart deploy/poe -n poe

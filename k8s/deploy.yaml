@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poe
+  labels:
+    app: poe
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: poe
+  template:
+    metadata:
+      labels:
+        app: poe
+    spec:
+      imagePullSecrets:
+      - name: ghcr
+      containers:
+      - name: poe
+        imagePullPolicy: Always
+        image: ghcr.io/poe-engineer/poe-github-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GITHUB_APP_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gh-private-key 
+              key: poe-engineer.pem
+        envFrom:
+        - configMapRef:
+            name: poe-config
