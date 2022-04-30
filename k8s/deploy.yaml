@@ -19,7 +19,7 @@ spec:
       containers:
       - name: poe
         imagePullPolicy: Always
-        image: ghcr.io/poe-engineer/poe-github-app:latest
+        image: ghcr.io/poe-engineer/poe-app:latest
         ports:
         - containerPort: 3000
         env:

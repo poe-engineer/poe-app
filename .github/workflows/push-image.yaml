@@ -19,12 +19,12 @@ jobs:
 
       - name: Build Container
         run: |
-          docker build . -t ghcr.io/poe-engineer/poe-github-app:latest
+          docker build . -t ghcr.io/poe-engineer/poe-app:latest
 
       - name: Publish Container
         run: |
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-          docker push ghcr.io/poe-engineer/poe-github-app:latest
+          docker push ghcr.io/poe-engineer/poe-app:latest
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
