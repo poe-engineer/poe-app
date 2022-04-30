@@ -1,6 +1,6 @@
 # Poe the butler
-![TypeScript version][ts-badge]
-[![Node.js version][nodejs-badge]][nodejs]
+
+source code behind https://github.com/marketplace/poe-engineer
 
 👩🏻‍💻 DevOps as a Service
 
