@@ -121,6 +121,7 @@ const createUniqueIssue = async (repo: string, owner: string, octokit: Octokit, 
         }
         return []
     })
+    issue.body = issue.body.slice(0, 65550)
     if (foundIssue.length > 0) {
         return octokit.request("PATCH /repos/{owner}/{repo}/issues/{issue_number}", {
             repo,
