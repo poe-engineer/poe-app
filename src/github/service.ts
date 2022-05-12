@@ -153,7 +153,7 @@ const createIssue = async (repo: string, owner: string, octokit, issue: GithubIs
         owner: owner,
         repo: repo,
         title: issue.title,
-        body: issue.body
+        body: issue.body.slice(65550)
     })
 }
 
