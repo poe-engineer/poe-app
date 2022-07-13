@@ -48,7 +48,10 @@ or Promote build
 const getReleaseMainText =  ({majorVersion, minorVersion, build, log, latestVersion, breakingChange}: ReleaseDocumentVars): GithubIssue => {
     return {
         "title": "[poe][release] Your next release",
-        "body": `
+        "body": `     
+<!--commits
+${ log.commits.map(elem => elem.sha).join(" ") }
+-->
 # New release
 
 ## Preparing for release
@@ -78,9 +81,6 @@ If you would like poe to create a release for you, comment on this issue with th
 
 **In case you have a special requirement you may enter which version you see fit**
 
-<!--commits
-${ log.commits.map(elem => elem.sha).join(" ") }
--->
 `
     }
 }
