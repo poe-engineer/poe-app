@@ -113,6 +113,7 @@ const getTags = async (repo, owner, octokit: Octokit): Promise<GithubTag[]> => {
  * @param {GithubIssue} issue - github issue
  */
 const createUniqueIssue = async (repo: string, owner: string, octokit: Octokit, issue: GithubIssue, labels) => {
+    const body = issue.body.slice(0, 64550)
     const foundIssue = await octokit.paginate("GET /repos/{owner}/{repo}/issues", {repo, owner}, (res, done) => {
         const l = res.data.filter( iss => iss.title == issue.title && iss.state == "open" )
         if (l.length > 0) { 
@@ -121,13 +122,12 @@ const createUniqueIssue = async (repo: string, owner: string, octokit: Octokit, 
         }
         return []
     })
-    issue.body = issue.body.slice(0, 65550)
     if (foundIssue.length > 0) {
         return octokit.request("PATCH /repos/{owner}/{repo}/issues/{issue_number}", {
             repo,
             owner,
             title: issue.title,
-            body: issue.body,
+            body: body,
             issue_number: foundIssue[0].number,
             labels: labels
         })
@@ -136,7 +136,7 @@ const createUniqueIssue = async (repo: string, owner: string, octokit: Octokit, 
         owner: owner,
         repo: repo,
         title: issue.title,
-        body: issue.body,
+        body: body,
         labels: labels
     })
 }
